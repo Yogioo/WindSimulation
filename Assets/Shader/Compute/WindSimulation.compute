@@ -12,6 +12,7 @@
 
 // common
 float DeltaTime;
+float3 CenterWS;
 
 
 RWTexture3D <float4>  W_out;
@@ -64,9 +65,10 @@ void ApplyMotors(uint3 id: SV_DispatchThreadID)
     W_out.GetDimensions(dim.x, dim.y,dim.z);
      // 获得图片uv
     float3 uv = (id + 0.5) / dim;
-   float3 velocity =  W_in.SampleLevel(samplerW_in, uv, 0).xyz * 2 - 1;
+   float3 velocity =  W_in.SampleLevel(samplerW_in, uv, 0).xyz;
     
-    float3 cellPos = id;
+    float3 cellPos = id - dim/2.0  + CenterWS; 
+    
     // float3 velocity = GetVelocity(W_in, id);
     float3 currentVelocity = velocity;
     for (int count = 0; count < _MotorCount; count ++)
@@ -84,7 +86,7 @@ void ApplyMotors(uint3 id: SV_DispatchThreadID)
         ApplyMotorVortex(cellPos, _VortexMotors[count], velocity);
     }
     
-    SetVelocity(W_out, id.xyz, velocity);
+    W_out[id] = float4(velocity,1.0);
 }
 
 
@@ -131,7 +133,7 @@ void PSetup(uint3 tid: SV_DispatchThreadID)
      - W_in[tid - int3(0, 1, 0)].y
      + W_in[tid + int3(0, 0, 1)].z
      - W_in[tid - int3(0, 0, 1)].z
-    ) * dim.y / 2;
+    ) * dim.y / 3;
 
     P_out[tid] = 0;
 }

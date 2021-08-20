@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -14,7 +15,7 @@ namespace Wind.Core
         /// <summary>
         /// 粘度
         /// </summary>
-        [Range(1e-16f, 0.1f)]
+        [Range(1e-20f, 0.1f)]
         [SerializeField]
         float _viscosity = 0.01f;
 
@@ -76,12 +77,13 @@ namespace Wind.Core
             UpdateMotorOmni();
             UpdateMotorVortex();
         }
-        public void AddMotorDirectional(DirectionalMotor p_Motor)
+
+        public void AddMotorDirectional(WindMotor p_Motor)
         {
             this.DirectionalConfig.MotorTrans.Add(p_Motor);
             UpdateMotorDirectional();
         }
-        public void RemoveMotorDirectional(DirectionalMotor p_Motor)
+        public void RemoveMotorDirectional(WindMotor p_Motor)
         {
             var index = this.DirectionalConfig.MotorTrans.IndexOf(p_Motor);
             if (index > -1)
@@ -96,12 +98,12 @@ namespace Wind.Core
         }
 
 
-        public void AddMotorOmni(OmniMotor p_Motor)
+        public void AddMotorOmni(WindMotor p_Motor)
         {
             this.OmniConfig.MotorTrans.Add(p_Motor);
             UpdateMotorOmni();
         }
-        public void RemoveMotorOmni(OmniMotor p_Motor)
+        public void RemoveMotorOmni(WindMotor p_Motor)
         {
             var index = this.OmniConfig.MotorTrans.IndexOf(p_Motor);
             if (index > -1)
@@ -115,14 +117,14 @@ namespace Wind.Core
             }
         }
 
-        public void AddMotorVortexMotor(VortexMotor p_Motor)
+        public void AddMotorVortexMotor(WindMotor p_Motor)
         {
 
             this.VortexConfig.MotorTrans.Add(p_Motor);
             UpdateMotorVortex();
         }
 
-        public void RemoveMotorVortexMotor(VortexMotor p_Motor)
+        public void RemoveMotorVortexMotor(WindMotor p_Motor)
         {
             var index = this.VortexConfig.MotorTrans.IndexOf(p_Motor);
             if (index > -1)
@@ -216,16 +218,17 @@ namespace Wind.Core
         {
 
             var dt = Time.deltaTime;
-            var dx = 1.0f / Resolution.y;
+            var dx = 1.0f / Resolution.x;
 
             _compute.SetFloat("DeltaTime", dt);
+            _compute.SetVector("CenterWS", this.transform.position);
 
             //Advection
             _compute.SetTexture(Kernel.Advect, "U_in", VFB.V1);
             _compute.SetTexture(Kernel.Advect, "W_out", VFB.V2);
             _compute.Dispatch(Kernel.Advect, ThreadCountX, ThreadCountY, ThreadCountZ);
 
-            // Diffuse setup
+            //Diffuse setup
             var dif_alpha = dx * dx / (_viscosity * dt);
             _compute.SetFloat("Alpha", dif_alpha);
             _compute.SetFloat("Beta", 6 + dif_alpha);
@@ -263,7 +266,7 @@ namespace Wind.Core
             _compute.SetFloat("Beta", 6);
             _compute.SetTexture(Kernel.Jacobi1, "B1_in", VFB.V2);
 
-            for (var i = 0; i < 20; i++)
+            for (var i = 0; i < Count; i++)
             {
                 _compute.SetTexture(Kernel.Jacobi1, "X1_in", VFB.P1);
                 _compute.SetTexture(Kernel.Jacobi1, "X1_out", VFB.P2);
@@ -280,10 +283,14 @@ namespace Wind.Core
             _compute.SetTexture(Kernel.PFinish, "U_out", VFB.V1);
             _compute.Dispatch(Kernel.PFinish, ThreadCountX, ThreadCountY, ThreadCountZ);
 
-            //Graphics.CopyTexture(VFB.V3, VFB.V1);
+            Graphics.CopyTexture(VFB.V3, VFB.V1);
             Shader.SetGlobalTexture("_WindTex", VFB.V1);
+            Shader.SetGlobalVector("_DivisionSize", this.divisionSize);
+            Shader.SetGlobalVector("_WindCenter", this.transform.position);
 
         }
+
+        public int Count = 50;
 
 
     }

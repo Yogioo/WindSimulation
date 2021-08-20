@@ -10,7 +10,7 @@ namespace Wind.Common
     public class MotorDirectionalConfig : IDisposable
     {
         public const int MAX_COUNT = 100;
-        public List<DirectionalMotor> MotorTrans;
+        public List<WindMotor> MotorTrans;
         public MotorDirectional[] MotorValue;
         public ComputeBuffer ComputeBuffer;
 
@@ -21,7 +21,7 @@ namespace Wind.Common
 
         public void InitMotorConfig()
         {
-            MotorTrans = new List<DirectionalMotor>(MAX_COUNT);
+            MotorTrans = new List<WindMotor>(MAX_COUNT);
             MotorValue = new MotorDirectional[MAX_COUNT];
             ComputeBuffer = new ComputeBuffer(MAX_COUNT, sizeof(float) * 8);
         }
@@ -30,9 +30,9 @@ namespace Wind.Common
         {
             for (int i = 0; i < MotorTrans.Count; i++)
             {
-                var p = (MotorTrans[i].transform.position ) + WindSimulationCore.Instance.divisionSize;
+                var p = (MotorTrans[i].transform.position) ;
                 MotorValue[i].posWS = p;
-                MotorValue[i].force = MotorTrans[i].Force;
+                MotorValue[i].force = MotorTrans[i].Force * Time.deltaTime;
                 MotorValue[i].direction = MotorTrans[i].transform.forward;
                 MotorValue[i].sqRadius = Mathf.Pow(MotorTrans[i].Radius,2);
             }

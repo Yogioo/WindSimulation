@@ -170,12 +170,12 @@ namespace Wind.Core
             Shader.SetGlobalTexture(ShaderIDs.WindGlobalTex, VelocityRT1);
         }
 
-        public void AddMotorDirectional(DirectionalMotor p_Motor)
+        public void AddMotorDirectional(WindMotor p_Motor)
         {
             this.DirectionalConfig.MotorTrans.Add(p_Motor);
             UpdateMotorDirectional();
         }
-        public void RemoveMotorDirectional(DirectionalMotor p_Motor)
+        public void RemoveMotorDirectional(WindMotor p_Motor)
         {
             if (this.DirectionalConfig.MotorTrans.Remove(p_Motor))
             {
@@ -184,12 +184,12 @@ namespace Wind.Core
         }
 
 
-        public void AddMotorOmni(OmniMotor p_Motor)
+        public void AddMotorOmni(WindMotor p_Motor)
         {
             this.OmniConfig.MotorTrans.Add(p_Motor);
             UpdateMotorOmni();
         }
-        public void RemoveMotorOmni(OmniMotor p_Motor)
+        public void RemoveMotorOmni(WindMotor p_Motor)
         {
             if (this.OmniConfig.MotorTrans.Remove(p_Motor))
             {
@@ -197,13 +197,13 @@ namespace Wind.Core
             }
         }
 
-        public void AddMotorVortexMotor(VortexMotor p_Motor)
+        public void AddMotorVortexMotor(WindMotor p_Motor)
         {
             this.VortexConfig.MotorTrans.Add(p_Motor);
             UpdateMotorVortex();
         }
 
-        public void RemoveMotorVortexMotor(VortexMotor p_Motor)
+        public void RemoveMotorVortexMotor(WindMotor p_Motor)
         {
             if (this.VortexConfig.MotorTrans.Remove(p_Motor))
             {

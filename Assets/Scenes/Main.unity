@@ -332,11 +332,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 963776648}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa0b2e4ccd656d14eb1cbf0291dc6ed5, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c1f9486af5600f498a009e537b71585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Force: 1
   Radius: 2
+  Force: 1
+  _WindSpawnMode: 1
 --- !u!4 &963776650
 Transform:
   m_ObjectHideFlags: 0
@@ -442,7 +443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 134eee3b39435e348bdf31825faf645b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viscosity: 1e-16
+  _viscosity: 0.0003
   _compute: {fileID: 7200000, guid: 3f70da07b7687444f93a360b2d07327d, type: 3}
   Resolution: {x: 32, y: 16, z: 32}
   DirectionalConfig:
@@ -454,6 +455,7 @@ MonoBehaviour:
   VortexConfig:
     MotorTrans: []
     MotorValue: []
+  Count: 20
 --- !u!1 &1197039726
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,7 +472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1197039727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,11 +482,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1197039726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b121d720d6274ab4ea7475faab3fc279, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c1f9486af5600f498a009e537b71585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Radius: 0
   Force: 1
-  radius: 1
+  _WindSpawnMode: 2
 --- !u!4 &1197039728
 Transform:
   m_ObjectHideFlags: 0
@@ -492,8 +495,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1197039726}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.78, y: 0, z: -1.57}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1457881945}
@@ -734,12 +737,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1852179015}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a64fe2c375d00c041806de5634098b89, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c1f9486af5600f498a009e537b71585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Force: 1
-  ForceWave: 0.2
-  Radius: 1
+  Radius: 2.6
+  Force: 6.21
+  _WindSpawnMode: 0
 --- !u!4 &1852179017
 Transform:
   m_ObjectHideFlags: 0

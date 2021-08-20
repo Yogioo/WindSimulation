@@ -43,11 +43,15 @@
     void ApplyMotorOmni(in float3 cellPosWS, uniform MotorOmni motorOmni, in out float3 velocityWS)
     {
         // force = strength * deltaTime
-        float3 differenceWs = cellPosWS - motorOmni.posWS;
-        float distanceSq = lengthSq(differenceWs + 0.0001f);
+        float3 differenceWs = cellPosWS - motorOmni.posWS + 0.0001f;
+        float distanceSq = lengthSq(differenceWs);
+        float3 direction = normalize(differenceWs);
         // 速度受到作用半径和距离的影响
         if (distanceSq < motorOmni.radiusSq)
-            velocityWS += motorOmni.force * rsqrt(distanceSq);
+        {
+            velocityWS += motorOmni.force * direction * (distanceSq/motorOmni.radiusSq);
+        }
+            // velocityWS += motorOmni.force * direction *(-rsqrt(distanceSq)-motorOmni.radiusSq) ;//* rsqrt(distanceSq);
     }
     
     // 螺旋风

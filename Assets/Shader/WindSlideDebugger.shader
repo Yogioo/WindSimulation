@@ -40,10 +40,10 @@
                 // fixed4 col = tex3D(_WindTex, Wolrd2UV(i.worlduv));
                 float4 col = float4(1, 1, 1, 1);
                 col.xyz = GetWindForce(i.worlduv.xyz);
-                if (col.x + col.y + col.z == 0)
-                {
-                    return 0.3f;
-                }
+                col.xyz = col.x+col.y+col.z;
+                // if(any(col.xyz) <= 0.1f){
+                //     col = 0.3f;
+                // }
                 return col;
             }
             ENDCG
